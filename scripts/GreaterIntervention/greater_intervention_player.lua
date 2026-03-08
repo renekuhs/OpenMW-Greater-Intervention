@@ -20,9 +20,9 @@ local SPELL_MAP = {
 }
 
 -- Map standard Intervention Spell IDs to the specific Marker IDs they filter for.
-local STANDARD_SPELL_MAP = {
-    ["almsivi intervention"] = "templemarker",
-    ["divine intervention"] = "divinemarker"
+local STANDARD_SPELL_EFFECT_MAP = {
+    ["almsiviintervention"] = "templemarker",
+    ["divineintervention"] = "divinemarker"
 }
 
 -- Track selected standard Intervention spell to prevent constant updating
@@ -277,16 +277,20 @@ return {
                 local sId = selectedSpell.id:lower()
                 local noMatch = true;
 
-                -- Check if the currently selected spell is a standard Intervention one
-                for spellId, markerType in pairs(STANDARD_SPELL_MAP) do
-                    if sId == spellId then
-                        -- Match found
-                        noMatch = false
-                        -- Only show message if not already done so for this selected spell.
-                        if sId ~= recentStandardInterventionSpell then
-                            recentStandardInterventionSpell = sId
-                            -- Request Marker data for corresponding marker type from Global script.
-                            core.sendGlobalEvent('requestMarkerData', { type = markerType })
+                -- Check if the currently selected spell has a spell effect that is a standard Intervention one
+                for spellEffectId, markerType in pairs(STANDARD_SPELL_EFFECT_MAP) do
+                    -- Check every spell effect
+                    for _, effect in ipairs(selectedSpell.effects) do 
+                        effectId = effect.id:lower()
+                        if effectId == spellEffectId then
+                            -- Match found
+                            noMatch = false
+                            -- Only show message if not already done so for this selected spell.
+                            if sId ~= recentStandardInterventionSpell then
+                                recentStandardInterventionSpell = sId
+                                -- Request Marker data for corresponding marker type from Global script.
+                                core.sendGlobalEvent('requestMarkerData', { type = markerType })
+                            end
                         end
                     end
                 end
