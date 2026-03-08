@@ -1,5 +1,6 @@
 # (OpenMW) Greater Intervention
 An OpenMW mod that adds Greater versions of Almsivi and Divine Intervention that allow you to select which previously discovered temple or shrine to teleport to. Highly compatible since it discovers Temple and Divine markers dynamically as the world loads. Also enhances standard Intervention spells by showing the closest discovered marker.
+Hosted on Nexus Mods: https://www.nexusmods.com/morrowind/mods/58108
 
 ## Description
 Adds Greater versions of Almsivi and Divine Intervention that allow you to select which previously discovered temple or shrine (respectively) to teleport to. They can be purchased from the highest ranking spell sellers of the Temple and Imperial Cult from the base game: Dileno Lloran in Vivec, High Fane for Greater Almsivi Intervention and Lalatia Varian in Ebonheart, Imperial Chapel for Greater Divine Intervention through corresponding dialog topics.
