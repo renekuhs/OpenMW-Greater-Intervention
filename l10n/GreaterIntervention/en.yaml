@@ -1,0 +1,38 @@
+mod_name: "Greater Intervention"
+mod_description: "Adds Greater versions of Intervention spells that allow you to select which previously discovered temple or shrine to teleport to. Optionally enhances standard Intervention spells by showing the closest discovered marker."
+settings_window_name: "Settings"
+text_size: "Text Size"
+text_size_desc: |
+    Specify the size of the text and buttons in the Greater Intervention menus.
+    
+    Default: 20
+    Min: 2
+    Max: 100
+    
+max_items_per_column: "Maximum Buttons Per Column"
+max_items_per_column_desc: |
+    Specify the maximum number of buttons in a column before new columns are created. Reduce this if you notice buttons starting to render off screen.
+    
+    Default: 16
+    Min: 2
+    Max: 100
+    
+enable_standard_intervention_enhance: "Enable Standard Intervention Enhancement"
+enable_standard_intervention_enhance_desc: |
+    Controls whether to display the closest discovered temple or shrine in a text pop-up upon spell selection. If the below option is enabled and Magic Window Extender is also active, this option is ignored.
+    
+    Default: Yes
+    
+enable_standard_intervention_enhance_MWE: "Use Magic Window Extender Tooltips"
+enable_standard_intervention_enhance_MWE_desc: |
+    Controls whether to display the closest discovered temple or shrine in the tooltips of standard Intervention spells. This option is ignored if Magic Window Extender is not active. Requires reload if disabled and tooltips have already been updated.
+    
+    Default: Yes
+    
+update_frequency: "Update Frequency"
+update_frequency_desc: |
+    Specifies, in seconds, how often to determine the closest discovered Intervention destinations. Decrease this if you notice the destinations not updating quickly enough after cell changes, or increase if there is a performance impact (should be negligible).
+    
+    Default: 5
+    Min: 1
+    Max: 60

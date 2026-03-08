@@ -1,0 +1,4 @@
+GLOBAL: scripts/GreaterIntervention/greater_intervention_global.lua
+PLAYER: scripts/GreaterIntervention/greater_intervention_player.lua
+PLAYER: scripts/GreaterIntervention/greater_intervention_MWE_custom_spell.lua
+PLAYER: scripts/GreaterIntervention/greater_intervention_settings.lua
