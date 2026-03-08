@@ -25,13 +25,13 @@ In the "Content Files" tab, enable "GreaterIntervention.omwaddon" and "GreaterIn
 See General Intervention Settings page in the main/pause menu under Options -> Scripts.
 
 The following console command lists all entries in a specific list:
-'''
+```
 luaGreaterInterventionList <list type (almsivi or divine)>
-'''
+```
 The following command allows you to hide or unhide specific entries by specifying the index as shown by the previous command:
-'''
+```
 luaGreaterInterventionHide <list type (almsivi or divine)> <index> <true or false>
-'''
+```
 
 ## Limitations
 Does not work in multiplayer.
