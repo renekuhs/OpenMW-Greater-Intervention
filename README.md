@@ -10,7 +10,7 @@ This all means that any mod should be compatible. Yes, Project Tamriel Rebuilt m
 
 The list of discovered markers are saved on a save file basis so should be consistent per character.
 
-There is now also functionality added that shows a message upon selecting a standard Intervention spell that shows the location of the nearest previously discovered marker, if the player is in an exterior cell. If using Magic Window Extender, the closest destination shows in the spell tooltip itself. Needless to say, this can be inaccurate if an undiscovered marker is actually closer. Can be disabled.
+There is now also functionality added that shows a message upon selecting a standard Intervention spell that shows the location of the nearest previously discovered marker~~, if the player is in an exterior cell~~. If using Magic Window Extender, the closest destination shows in the spell tooltip itself. Needless to say, this can be inaccurate if an undiscovered marker is actually closer. Can be disabled.
 
 ## Balancing
 Since the spells provide an extremely powerful function, they have been balanced through the following means:
@@ -39,7 +39,7 @@ luaGreaterInterventionHide <list type (almsivi or divine)> <index> <true or fals
 - ~~Since Magic Effects cannot be amended or added in OpenMW yet, the listed effect of the spell shows as Detect Key.~~ Since v1.01, proper spell tooltips are now supported using Magic Window Extender﻿. The values of the effect are such that the desired cost of the cast is achieved. Note that the magic effect is removed from the player in the exact frame that the spell is cast.
 - Unable to find all Almsivi/Divine markers in the world in the current versions of OpenMW Lua. Hence why the standard Intervention destination functionality can only show the nearest discovered marker. This is in the works, though, and will be possible in the near future.
 - Standard Intervention enhancement doesn't work for interior cells that don't have direct access to an exterior cell. You will see "Unknown" in this case.
-- When using Magic Window Extender and you have a lot of spells with intervention effects, there can be a significant lag opening the inventory menu due to the spell tooltips being updated. I have limited this updating as much as possible so that it only does so when the destinations are updated but, beyond that, there is nothing I can do since it seems to a limitation of the MWE API.
+- When using Magic Window Extender and you have a lot of spells with intervention effects, there can be a significant lag opening the inventory menu due to the spell tooltips being updated. I have limited this updating as much as possible so that it only does so when the destinations are updated but, beyond that, there is nothing I can do since it seems to be a limitation of the MWE API.
 
 ## Bugs
 None that I have found. Let me know if you find any...
