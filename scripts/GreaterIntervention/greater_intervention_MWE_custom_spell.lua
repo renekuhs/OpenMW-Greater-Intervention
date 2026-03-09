@@ -24,7 +24,7 @@ local STANDARD_SPELL_MAP = {
     ["divine intervention"] = "divinemarker"
 }
 
--- Map every core spell effect to the MWE Magnitude Type
+-- Map every core spell effect magnitude type to the MWE one
 local MagType = {
     NONE = 1,
     TIMES_INT = 2,
@@ -52,7 +52,7 @@ local effectMagTypes = {
     ["detect_animal"] = MagType.FEET, ["detect_enchantment"] = MagType.FEET, ["detect_key"] = MagType.FEET,
     ["telekinesis"] = MagType.FEET,
 
-    -- LEVEL (4): Effects capped by character level
+    -- LEVEL (4): Effects by level
     ["command_creature"] = MagType.LEVEL, ["command_humanoid"] = MagType.LEVEL,
     ["calm_creature"] = MagType.LEVEL, ["calm_humanoid"] = MagType.LEVEL,
     ["frenzy_creature"] = MagType.LEVEL, ["frenzy_humanoid"] = MagType.LEVEL,
