@@ -280,7 +280,7 @@ return {
                 -- Check if the currently selected spell has a spell effect that is a standard Intervention one
                 for spellEffectId, markerType in pairs(STANDARD_SPELL_EFFECT_MAP) do
                     -- Check every spell effect
-                    for _, effect in ipairs(selectedSpell.effects) do 
+                    for _, effect in ipairs(selectedSpell.effects) do
                         effectId = effect.id:lower()
                         if effectId == spellEffectId then
                             -- Match found

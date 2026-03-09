@@ -5,6 +5,7 @@ local nearby = require('openmw.nearby')
 local types = require('openmw.types')
 local I = require('openmw.interfaces')
 local storage   = require('openmw.storage')
+local types = require('openmw.types')
 
 local API = require('openmw.interfaces').MagicWindow
 
@@ -21,6 +22,69 @@ end
 local STANDARD_SPELL_MAP = {
     ["almsivi intervention"] = "templemarker",
     ["divine intervention"] = "divinemarker"
+}
+
+-- Map every core spell effect to the MWE Magnitude Type
+local MagType = {
+    NONE = 1,
+    TIMES_INT = 2,
+    FEET = 3,
+    LEVEL = 4,
+    PERCENTAGE = 5,
+    POINTS = 6,
+}
+local effectMagTypes = {
+    -- NONE (1): Effects with no numerical magnitude shown
+    ["almsiviintervention"] = MagType.NONE, ["divineintervention"] = MagType.NONE,
+    ["mark"] = MagType.NONE, ["recall"] = MagType.NONE,
+    ["waterwalking"] = MagType.NONE, ["waterbreathing"] = MagType.NONE,
+    ["soul_trap"] = MagType.NONE, ["paralyze"] = MagType.NONE, ["silence"] = MagType.NONE,
+    ["curecommonpithdisease"] = MagType.NONE, ["cureblightdisease"] = MagType.NONE,
+    ["cureparalyzation"] = MagType.NONE, ["curepoison"] = MagType.NONE,
+    ["bound_dagger"] = MagType.NONE, ["bound_longsword"] = MagType.NONE,
+    ["bound_mace"] = MagType.NONE, ["bound_battle_axe"] = MagType.NONE,
+    ["bound_spear"] = MagType.NONE, ["bound_longbow"] = MagType.NONE,
+    ["bound_cuirass"] = MagType.NONE, ["bound_helm"] = MagType.NONE,
+    ["bound_boots"] = MagType.NONE, ["bound_shield"] = MagType.NONE,
+    ["bound_gloves"] = MagType.NONE, ["corprus"] = MagType.NONE,
+
+    -- FEET (3): Distance-based effects
+    ["detect_animal"] = MagType.FEET, ["detect_enchantment"] = MagType.FEET, ["detect_key"] = MagType.FEET,
+    ["telekinesis"] = MagType.FEET,
+
+    -- LEVEL (4): Effects capped by character level
+    ["command_creature"] = MagType.LEVEL, ["command_humanoid"] = MagType.LEVEL,
+    ["calm_creature"] = MagType.LEVEL, ["calm_humanoid"] = MagType.LEVEL,
+    ["frenzy_creature"] = MagType.LEVEL, ["frenzy_humanoid"] = MagType.LEVEL,
+    ["demoralize_creature"] = MagType.LEVEL, ["demoralize_humanoid"] = MagType.LEVEL,
+    ["rally_creature"] = MagType.LEVEL, ["rally_humanoid"] = MagType.LEVEL,
+
+    -- PERCENTAGE (5): Standard chance or resistance modifiers
+    ["resist_fire"] = MagType.PERCENTAGE, ["resist_frost"] = MagType.PERCENTAGE,
+    ["resist_shock"] = MagType.PERCENTAGE, ["resist_magicka"] = MagType.PERCENTAGE,
+    ["resist_common_disease"] = MagType.PERCENTAGE, ["resist_blight_disease"] = MagType.PERCENTAGE,
+    ["resist_paralysis"] = MagType.PERCENTAGE, ["resist_poison"] = MagType.PERCENTAGE,
+    ["resist_normal_weapons"] = MagType.PERCENTAGE,
+    ["weakness_to_fire"] = MagType.PERCENTAGE, ["weakness_to_frost"] = MagType.PERCENTAGE,
+    ["weakness_to_shock"] = MagType.PERCENTAGE, ["weakness_to_magicka"] = MagType.PERCENTAGE,
+    ["weakness_to_common_disease"] = MagType.PERCENTAGE, ["weakness_to_blight_disease"] = MagType.PERCENTAGE,
+    ["weakness_to_corprus"] = MagType.PERCENTAGE, ["weakness_to_poison"] = MagType.PERCENTAGE,
+    ["weakness_to_normal_weapons"] = MagType.PERCENTAGE,
+    ["reflect"] = MagType.PERCENTAGE, ["spell_absorption"] = MagType.PERCENTAGE,
+    ["chameleon"] = MagType.PERCENTAGE, ["dispel"] = MagType.PERCENTAGE,
+    ["blind"] = MagType.PERCENTAGE, ["sound"] = MagType.PERCENTAGE, ["invisibility"] = MagType.PERCENTAGE,
+
+    -- POINTS (6): Standard "pts" display (Default)
+    ["open"] = MagType.POINTS, ["lock"] = MagType.POINTS, ["turn_undead"] = MagType.POINTS,
+    ["fire_damage"] = MagType.POINTS, ["frost_damage"] = MagType.POINTS, ["light"] = MagType.POINTS, ["night_eye"] = MagType.POINTS,
+    ["shock_damage"] = MagType.POINTS, ["poison"] = MagType.POINTS, ["sanctuary"] = MagType.POINTS,
+    ["restore_health"] = MagType.POINTS, ["restore_magicka"] = MagType.POINTS, ["restore_fatigue"] = MagType.POINTS,
+    ["drain_health"] = MagType.POINTS, ["drain_magicka"] = MagType.POINTS, ["drain_fatigue"] = MagType.POINTS,
+    ["damage_health"] = MagType.POINTS, ["damage_magicka"] = MagType.POINTS, ["damage_fatigue"] = MagType.POINTS,
+    ["absorb_health"] = MagType.POINTS, ["absorb_magicka"] = MagType.POINTS, ["absorb_fatigue"] = MagType.POINTS,
+    ["levitate"] = MagType.POINTS, ["slow_fall"] = MagType.POINTS, ["jump"] = MagType.POINTS, ["swift_swim"] = MagType.POINTS,
+    ["burden"] = MagType.POINTS, ["feather"] = MagType.POINTS, ["shield"] = MagType.POINTS,
+    ["fire_shield"] = MagType.POINTS, ["frost_shield"] = MagType.POINTS, ["lightning_shield"] = MagType.POINTS,
 }
 
 local Spells = API.Spells
@@ -138,6 +202,8 @@ end
 -- Track current closest Markers
 local currentTempleMarker = nil
 local currentDivineMarker = nil
+local recentTempleMarker = nil
+local recentDivineMarker = nil
 
 -- Record possible destination of standard Intervention spell
 local function showStandardInterventionDestination(data)
@@ -167,67 +233,97 @@ if config:get('EnableStandardInterventionEnhanceMWE') then
         -- Check if the Player Interface is currently active
         local isCurrentlyActive = I.UI.getMode()
 
-        -- Trigger only on the frame the menu opens
-        if isCurrentlyActive == "Interface" and not isMenuOpen then
-        
-            -- Update standard Intervention spell tooltips with latest closest markers
-            if currentTempleMarker then
-                Spells.registerEffect{
-                    id = "almsivi_intervention_enhanced",
-                    icon = "icons/s/B_Tx_S_Alm_Intervt.dds",
-                    name = "Almsivi Intervention to " .. currentTempleMarker,
-                    school = "mysticism",
-                    hasDuration = false,
-                    hasMagnitude = false,
-                    isAppliedOnce = true,
-                    magnitudeType = C.Magic.MagnitudeDisplayType.NONE,
+        -- Trigger only on the frame the menu opens and if the markers are present and updated
+        if isCurrentlyActive == "Interface" and not isMenuOpen and
+           (currentTempleMarker or currentDivineMarker) and
+           ((currentTempleMarker ~= recentTempleMarker) or (currentDivineMarker ~= recentDivineMarker)) then
+
+            local effectConfigs = {
+                ["almsiviintervention"] = {
+                    marker = currentTempleMarker,
+                    baseName = "Almsivi Intervention",
+                },
+                ["divineintervention"] = {
+                    marker = currentDivineMarker,
+                    baseName = "Divine Intervention",
                 }
-                
-                Spells.registerSpell{
-                    id = "almsivi intervention",
-                    effects = {
-                        {
-                            id = "almsivi_intervention_enhanced",
-                            effect = Spells.getCustomEffect("almsivi_intervention_enhanced"),
-                            magnitudeMin = 0,
-                            magnitudeMax = 0,
-                            area = 0,
-                            duration = 0,
-                            range = core.magic.RANGE.Self,
-                        }
-                    },
-                }
+            }
+
+            -- Remember this set of markers so we don't update again for the same
+            recentTempleMarker = currentTempleMarker
+            recentDivineMarker = currentDivineMarker
+
+            local playerSpells = types.Actor.spells(self)
+
+            for _, spell in ipairs(playerSpells) do
+                -- Check if the spell contains an intervention effect
+                local containsIntervention = false
+                for _, effect in ipairs(spell.effects) do
+                    local id = effect.id:lower()
+                    if effectConfigs[id] and effectConfigs[id].marker then
+                        containsIntervention = true
+                        break
+                    end
+                end
+
+                -- Process only the flagged spells
+                if containsIntervention then
+                    local spellEffects = {}
+
+                    for _, effect in ipairs(spell.effects) do
+                        local id = effect.id:lower()
+                        local config = effectConfigs[id]
+                        local customEffectName = (id .. "_custom")
+                        local coreEffect = core.magic.effects.records[effect.id]
+
+                        if config and config.marker then
+                            -- Register the intervention effect with dynamic name
+                            Spells.registerEffect({
+                                id = customEffectName,
+                                name = string.format("%s to %s", config.baseName, config.marker),
+                                icon = coreEffect.icon,
+                                school = coreEffect.school,
+                                hasDuration = coreEffect.hasDuration,
+                                hasMagnitude = coreEffect.hasMagnitude,
+                                isAppliedOnce = coreEffect.isAppliedOnce,
+                                magnitudeType = C.Magic.MagnitudeDisplayType.NONE,
+                            })
+                        else
+                            -- Register the non-intervention effect
+                            Spells.registerEffect({
+                                id = customEffectName,
+                                name = coreEffect.name,
+                                icon = coreEffect.icon,
+                                school = coreEffect.school,
+                                hasDuration = coreEffect.hasDuration,
+                                hasMagnitude = coreEffect.hasMagnitude,
+                                isAppliedOnce = coreEffect.isAppliedOnce,
+                                magnitudeType = effectMagTypes[id] or MagType.POINTS
+                            })
+                        end
+
+                        -- Link the effect to the spell
+                        table.insert(spellEffects, {
+                            id = customEffectName,
+                            effect = Spells.getCustomEffect(customEffectName),
+                            magnitudeMin = effect.magnitudeMin,
+                            magnitudeMax = effect.magnitudeMax,
+                            area = effect.area,
+                            duration = effect.duration,
+                            range = effect.range,
+                        })
+                    end
+
+                    -- Finalize the MWE tooltip override
+                    Spells.registerSpell({
+                        id = spell.id,
+                        effects = spellEffects
+                    })
+                end
             end
-            if currentDivineMarker then
-                Spells.registerEffect{
-                    id = "divine_intervention_enhanced",
-                    icon = "icons/s/B_Tx_S_Divine_Intervt.dds",
-                    name = "Divine Intervention to " .. currentDivineMarker,
-                    school = "mysticism",
-                    hasDuration = false,
-                    hasMagnitude = false,
-                    isAppliedOnce = true,
-                    magnitudeType = C.Magic.MagnitudeDisplayType.NONE,
-                }
-                
-                Spells.registerSpell{
-                    id = "divine intervention",
-                    effects = {
-                        {
-                            id = "divine_intervention_enhanced",
-                            effect = Spells.getCustomEffect("divine_intervention_enhanced"),
-                            magnitudeMin = 0,
-                            magnitudeMax = 0,
-                            area = 0,
-                            duration = 0,
-                            range = core.magic.RANGE.Self,
-                        }
-                    },
-                }
-            end
-            
+
             isMenuOpen = true -- Set state to prevent re-triggering every frame
-        
+
         -- Reset the state when the menu is closed
         elseif isCurrentlyActive ~= "Interface" and isMenuOpen then
             isMenuOpen = false

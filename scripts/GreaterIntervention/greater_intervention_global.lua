@@ -34,11 +34,11 @@ local function updateInterventionGlobals()
         if id == SPELL_ALMSIVI then globals.PCHasGreaterAlmsiviIntervention = 1
         elseif id == SPELL_DIVINE then globals.PCHasGreaterDivineIntervention = 1 end
     end
-    
+
     -- Set add topic triggers based on whether player has spells or not.
     if globals.PCHasGreaterAlmsiviIntervention == 0 then globals.GreaterAlmsiviIntAddTopicTrigger = 1 end
     if globals.PCHasGreaterDivineIntervention == 0 then globals.GreaterDivineIntAddTopicTrigger = 1 end
-    
+
     -- Comment before ship
     --print(globals.PCHasGreaterAlmsiviIntervention .. globals.PCHasGreaterDivineIntervention .. globals.GreaterAlmsiviIntAddTopicTrigger .. globals.GreaterDivineIntAddTopicTrigger)
 end
@@ -73,7 +73,7 @@ return {
                     x = obj.position.x, y = obj.position.y, z = obj.position.z,
                     cell = obj.cell.name, label = displayName
                 })
-                
+
                 -- Notification of new marker discovery.
                 print("[Greater Intervention]: Found " .. id .. " in " .. displayName)
                 world.players[1]:sendEvent('receiveNewDiscovery', displayName)
@@ -86,7 +86,7 @@ return {
                 updateInterventionGlobals()
                 print("[Greater Intervention]: Script initialised.")
         end,
-        
+
         -- Save marker lists upon game save.
         onSave = function() return { markers = markers } end,
 
