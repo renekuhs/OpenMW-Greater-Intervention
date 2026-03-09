@@ -50,8 +50,8 @@ Feedback and suggestions are very welcome.
 
 ## Future
 If there is interest shown, here are a few ideas I have.
-Provide alternative version without balancing for those who want a more relaxed experience obtaining and using the spells. Could be in the form of wearables?
-Currently, if the player was unaware of the mod, or forgot about it, there is no indication to the player of the existence of these spells apart from stumbling on the dialog topics by accident by talking to the two NPCs. Maybe the player could be informed through latest rumours?
-I've tried to make the dialog fit in, and it works well enough, but perhaps the "lore" around the spells and how they came about could be expanded. Maybe even obtained through quests? I'm not a creative person at all so very much open to ideas...
-Currently the locations are saved in the order of discovery. Maybe having an alphabetically sorted list would be more useful?
-Localisation?
+- Provide alternative version without balancing for those who want a more relaxed experience obtaining and using the spells. Could be in the form of wearables?
+- Currently, if the player was unaware of the mod, or forgot about it, there is no indication to the player of the existence of these spells apart from stumbling on the dialog topics by accident by talking to the two NPCs. Maybe the player could be informed through latest rumours?
+- I've tried to make the dialog fit in, and it works well enough, but perhaps the "lore" around the spells and how they came about could be expanded. Maybe even obtained through quests? I'm not a creative person at all so very much open to ideas...
+- Currently the locations are saved in the order of discovery. Maybe having an alphabetically sorted list would be more useful?
+- Localisation?
