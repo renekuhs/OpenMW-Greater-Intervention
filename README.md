@@ -35,10 +35,10 @@ luaGreaterInterventionHide <list type (almsivi or divine)> <index> <true or fals
 ```
 
 ## Limitations
-Does not work in multiplayer.
-~~Since Magic Effects cannot be amended or added in OpenMW yet, the listed effect of the spell shows as Detect Key.~~ Since v1.01, proper spell tooltips are now supported using Magic Window Extender﻿. The values of the effect are such that the desired cost of the cast is achieved. Note that the magic effect is removed from the player in the exact frame that the spell is cast.
+Does not work in multiplayer.<br/>
+~~Since Magic Effects cannot be amended or added in OpenMW yet, the listed effect of the spell shows as Detect Key.~~ Since v1.01, proper spell tooltips are now supported using Magic Window Extender﻿. The values of the effect are such that the desired cost of the cast is achieved. Note that the magic effect is removed from the player in the exact frame that the spell is cast.<br/>
 Unable to find all Almsivi/Divine markers in the world in the current versions of OpenMW Lua. Hence why the standard Intervention destination functionality can only show the nearest discovered marker. This is in the works, though, and will be possible in the near future.
-Standard Intervention enhancement doesn't work for interior cells that don't have direct access to an exterior cell. You will see "Unknown" in this case.
+Standard Intervention enhancement doesn't work for interior cells that don't have direct access to an exterior cell. You will see "Unknown" in this case.<br/>
 When using Magic Window Extender and you have a lot of spells with intervention effects, there can be a significant lag opening the inventory menu due to the spell tooltips being updated. I have limited this updating as much as possible so that it only does so when the destinations are updated but, beyond that, there is nothing I can do since it seems to a limitation of the MWE API.
 
 ## Bugs
