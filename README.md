@@ -10,7 +10,7 @@ This all means that any mod should be compatible. Yes, Project Tamriel Rebuilt m
 
 The list of discovered markers are saved on a save file basis so should be consistent per character.
 
-There is now also functionality added that shows a message upon selecting a standard Intervention spell that shows the location of the nearest previously discovered marker~~, if the player is in an exterior cell~~. If using Magic Window Extender, the closest destination shows in the spell tooltip itself. Needless to say, this can be inaccurate if an undiscovered marker is actually closer. Can be disabled.
+There is now also functionality added that shows a message upon selecting a standard Intervention spell that shows the location of the nearest previously discovered marker, ~~if the player is in an exterior cell~~. If using Magic Window Extender, the closest destination shows in the spell tooltip itself. Needless to say, this can be inaccurate if an undiscovered marker is actually closer. Can be disabled.
 
 ## Balancing
 Since the spells provide an extremely powerful function, they have been balanced through the following means:
