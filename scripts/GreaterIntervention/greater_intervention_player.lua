@@ -274,22 +274,24 @@ return {
                (not config:get('EnableStandardInterventionEnhanceMWE') or not MWE_API) then
                 -- Get currently selected spell.
                 local selectedSpell = types.Player.getSelectedSpell(self)
-                local sId = selectedSpell.id:lower()
                 local noMatch = true;
-
-                -- Check if the currently selected spell has a spell effect that is a standard Intervention one
-                for spellEffectId, markerType in pairs(STANDARD_SPELL_EFFECT_MAP) do
-                    -- Check every spell effect
-                    for _, effect in ipairs(selectedSpell.effects) do
-                        effectId = effect.id:lower()
-                        if effectId == spellEffectId then
-                            -- Match found
-                            noMatch = false
-                            -- Only show message if not already done so for this selected spell.
-                            if sId ~= recentStandardInterventionSpell then
-                                recentStandardInterventionSpell = sId
-                                -- Request Marker data for corresponding marker type from Global script.
-                                core.sendGlobalEvent('requestMarkerData', { type = markerType })
+                if selectedSpell then
+                    local sId = selectedSpell.id:lower()
+                    
+                    -- Check if the currently selected spell has a spell effect that is a standard Intervention one
+                    for spellEffectId, markerType in pairs(STANDARD_SPELL_EFFECT_MAP) do
+                        -- Check every spell effect
+                        for _, effect in ipairs(selectedSpell.effects) do
+                            effectId = effect.id:lower()
+                            if effectId == spellEffectId then
+                                -- Match found
+                                noMatch = false
+                                -- Only show message if not already done so for this selected spell.
+                                if sId ~= recentStandardInterventionSpell then
+                                    recentStandardInterventionSpell = sId
+                                    -- Request Marker data for corresponding marker type from Global script.
+                                    core.sendGlobalEvent('requestMarkerData', { type = markerType })
+                                end
                             end
                         end
                     end
