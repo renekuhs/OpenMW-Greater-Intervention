@@ -98,12 +98,15 @@ local function createInterventionMenu(markerList)
     end
 
     -- 2. Assemble Buttons
+    -- Track index independently of for loop to ensure hidden entries are not taken in to account
+    local index = 1
     for i, marker in ipairs(markerList) do
         if not marker.hidden then
             table.insert(buttonContent, makeButton(i, marker.label, util.color.rgb(223/255, 201/255, 156/255), function()
                 core.sendGlobalEvent('executeTeleport', marker)
                 closeMenu()
             end))
+            index = index + 1
         end
     end
     -- Add Cancel Button
