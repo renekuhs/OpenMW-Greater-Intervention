@@ -57,7 +57,11 @@ return {
                 -- Ensure the current marker has not already been found.
                 local list = markers[id]
                 for _, pos in ipairs(list) do
-                    if pos.x == obj.position.x and pos.y == obj.position.y then return end
+                    if pos.x == obj.position.x and pos.y == obj.position.y then
+                        -- For previously discovered markers, add isExterior flag if not present
+                        if pos.isExterior == nil then pos.isExterior = obj.cell.isExterior end
+                        return
+                    end
                     -- Don't add markers that are really close to each other
                     if math.abs(pos.x - obj.position.x) < 1000 and math.abs(pos.y - obj.position.y) < 1000 then return end
                 end
@@ -71,7 +75,7 @@ return {
                 -- Insert marker into corresponding list.
                 table.insert(list, {
                     x = obj.position.x, y = obj.position.y, z = obj.position.z,
-                    cell = obj.cell.name, label = displayName
+                    cell = obj.cell.name, label = displayName, isExterior = obj.cell.isExterior
                 })
 
                 -- Notification of new marker discovery.

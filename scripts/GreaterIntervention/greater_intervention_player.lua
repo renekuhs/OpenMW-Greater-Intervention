@@ -201,10 +201,13 @@ local function findClosest(markerList)
     local minDistance = math.huge
 
     for _, marker in ipairs(markerList) do
-        local dist = getChebyshevDistance(playerPos, marker.x, marker.y)
-        if dist < minDistance then
-            minDistance = dist
-            closest = marker
+        -- For backwards compat, treat lack of isExterior marker as exterior
+        if marker.isExterior or marker.isExterior == nil then
+            local dist = getChebyshevDistance(playerPos, marker.x, marker.y)
+            if dist < minDistance then
+                minDistance = dist
+                closest = marker
+            end
         end
     end
     return closest
@@ -227,10 +230,15 @@ end
 
 local function printToConsole(data)
     for index, marker in ipairs(data) do
+        local isExterior = "-"
+        if marker.isExterior ~= nil then
+            isExterior = marker.isExterior and "Ext" or "Int"
+        end
+        
         if not marker.hidden then
-            ui.printToConsole(index .. ". " .. marker.label .. " (" .. marker.x .. ", " .. marker.y .. ")", ui.CONSOLE_COLOR.Success)
+            ui.printToConsole(index .. ". " .. marker.label .. " (" .. marker.x .. ", " .. marker.y .. ") " .. isExterior, ui.CONSOLE_COLOR.Success)
         else
-            ui.printToConsole(index .. ". " .. marker.label .. " (" .. marker.x .. ", " .. marker.y .. ")", ui.CONSOLE_COLOR.Info)
+            ui.printToConsole(index .. ". " .. marker.label .. " (" .. marker.x .. ", " .. marker.y .. ") " .. isExterior, ui.CONSOLE_COLOR.Info)
         end
     end
 end
